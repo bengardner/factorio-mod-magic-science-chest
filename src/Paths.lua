@@ -1,5 +1,5 @@
 local Paths = {
-  graphics = "__bng-magic-science-pack-chest__/graphics",
+  graphics = "__magic-science-pack-chest__/graphics",
 }
 
 return Paths
