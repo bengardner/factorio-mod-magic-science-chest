@@ -2,7 +2,7 @@
 
 ## Overview
 
-This mod adds a chest named "Magic Science Pack Chest" that automatically
+This mod adds a chest named "Magic Science Chest" that automatically
 refills with all researched and produced science packs.
 
 This is obviously a cheat.
