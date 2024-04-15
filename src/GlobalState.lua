@@ -1,5 +1,3 @@
-local constants = require 'src.constants'
-
 local M = {}
 
 function M.setup()
@@ -33,13 +31,11 @@ function M.get_science_packs(force_scan)
   if next(pp) == nil or force_scan then
 
     -- scan lab prototypes and update the list of science packs
-    for k, ep in pairs(game.entity_prototypes) do
-      if ep.type == "lab" then
-        for _, item_name in ipairs(ep.lab_inputs) do
-          local ip = game.item_prototypes[item_name]
-          if ip ~= nil then
-            pp[item_name] = ip.stack_size
-          end
+    for _, ep in pairs(game.get_filtered_entity_prototypes{type="lab"}) do
+      for _, item_name in ipairs(ep.lab_inputs) do
+        local ip = game.item_prototypes[item_name]
+        if ip ~= nil then
+          pp[item_name] = ip.stack_size
         end
       end
     end
