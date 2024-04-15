@@ -35,7 +35,7 @@ function M.get_science_packs(force_scan)
 
   if next(pp) == nil or force_scan then
     -- scan lab prototypes and update the list of science packs
-    for _, ep in pairs(game.get_filtered_entity_prototypes{type="lab"}) do
+    for _, ep in pairs(game.get_filtered_entity_prototypes{{ filter="type", type="lab" }}) do
       for _, item_name in ipairs(ep.lab_inputs) do
         local ip = game.item_prototypes[item_name]
         if ip ~= nil then
@@ -46,7 +46,7 @@ function M.get_science_packs(force_scan)
 
     global.science_packs = pp
     for name, cnt in pairs(global.science_packs) do
-      print(string.format('Magic Science Pack: %s %s', name, cnt))
+      print(string.format('Magic Science Chest: %s %s', name, cnt))
     end
   end
   return global.science_packs

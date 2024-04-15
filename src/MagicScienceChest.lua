@@ -89,7 +89,7 @@ end
 
 -- this is called at startup when any mod changes
 local function update_configuration(event)
-  print("Magic Science Pack Chest: rescan")
+  print("Magic Science Chest: rescan")
   GlobalState.get_science_packs(true)
 end
 
