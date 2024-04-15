@@ -52,19 +52,16 @@ end
 
 --[[
 Filter the complete list of science_packs to which ones the force
-has researched and produced.
+has produced.
 This is done once per force per update cycle.
 ]]
 local function filter_science_packs(force, science_packs)
   local available = {}
   local ips = force.item_production_statistics
 
-  -- NOTE: I am assuming the tech is named the same as the science_pack
+  -- limit to how much has been produced
   for item_name, stack_size in pairs(science_packs) do
-    local tech = force.technologies[item_name]
-    if tech == nil or tech.researched then
-      available[item_name] = math.min(stack_size, ips.get_input_count(item_name))
-    end
+    available[item_name] = math.min(stack_size, ips.get_input_count(item_name))
   end
   return available
 end
