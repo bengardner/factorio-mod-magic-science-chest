@@ -14,6 +14,7 @@ entity.picture = {
 }
 entity.minable.result = name
 entity.inventory_size = 39
+entity.se_allow_in_space = true
 
 
 local item = table.deepcopy(data.raw["item"][source_item_name])
@@ -28,8 +29,8 @@ local recipe = {
   name = name,
   type = "recipe",
   enabled = true,
-  energy_required = 10,
-  ingredients =  { { "iron-plate", 32} },
+  energy_required = 1,
+  ingredients = {}, -- free
   result = name,
   result_count = 1,
 }
