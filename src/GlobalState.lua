@@ -7,9 +7,14 @@ function M.setup()
 end
 
 function M.entity_register(entity)
-  M.setup()
-  if global.entities[entity.unit_number] == nil then
-    global.entities[entity.unit_number] = entity
+  if entity ~= nil and entity.valid then
+    local unum = entity.unit_number
+    if unum ~= nil then
+      M.setup()
+      if global.entities[unum] == nil then
+        global.entities[unum] = entity
+      end
+    end
   end
 end
 
@@ -25,11 +30,10 @@ function M.entity_table()
 end
 
 function M.get_science_packs(force_scan)
-  -- scan prototypes for science-packs, going backwards from labs
-
+  -- scan for science-packs by looking at lab_inputs
   local pp = global.science_packs or {}
-  if next(pp) == nil or force_scan then
 
+  if next(pp) == nil or force_scan then
     -- scan lab prototypes and update the list of science packs
     for _, ep in pairs(game.get_filtered_entity_prototypes{type="lab"}) do
       for _, item_name in ipairs(ep.lab_inputs) do
