@@ -1,8 +1,8 @@
 {
   "name": "magic-science-chest",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "title": "Magic Science Chest",
-  "author": "Ben Gardner",
+  "author": "Dreaden",
   "factorio_version": "1.1",
   "dependencies": ["base >= 1.1"],
   "description": "This mod adds a chest that magically refills with science packs."
