@@ -46,7 +46,7 @@ function M.get_science_packs(force_scan)
 
     global.science_packs = pp
     for name, cnt in pairs(global.science_packs) do
-      print(string.format('Magic Science Chest: %s %s', name, cnt))
+      log(('Magic Science Chest: %s %s'): format(name, cnt))
     end
   end
   return global.science_packs
