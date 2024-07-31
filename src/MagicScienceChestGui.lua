@@ -36,6 +36,7 @@ local function create_window(player, title, entity)
   main_window.auto_center = true
   main_window.style.horizontally_stretchable = true
   main_window.style.vertically_stretchable = true
+  main_window.style.maximal_height = 500
   elems.main_window = main_window
 
   -- create a vertical flow to cover the entire window body
@@ -135,7 +136,9 @@ function M.on_gui_open(player, entity)
   local right_flow = side_flow.add({ type = "flow", direction = "vertical" })
   local main_flow = right_flow.add({ type = "flow", direction = "vertical" })
 
-  local tt = main_flow.add{
+  local scroller = main_flow.add{ type = "scroll-pane" }
+
+  local tt = scroller.add{
     name = GUI_NAME_TABLE,
     type = "table",
     column_count = 3, -- icon, name, progress
@@ -244,6 +247,12 @@ local function on_gui_closed(event)
       if player ~= nil and player.valid then
         M.on_gui_closed(player, entity)
       end
+    end
+  end
+
+  if event.gui_type == defines.gui_type.custom then
+    if event.element.name == GUI_NAME_WINDOW then
+      M.destroy(gui_get(event.player_index))
     end
   end
 end
