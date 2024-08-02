@@ -240,20 +240,8 @@ local function on_gui_opened(event)
 end
 
 local function on_gui_closed(event)
-  if event.gui_type == defines.gui_type.entity then
-    local entity = event.entity
-    if entity ~= nil and entity.valid and entity.name == constants.CHEST_NAME then
-      local player = game.players[event.player_index]
-      if player ~= nil and player.valid then
-        M.on_gui_closed(player, entity)
-      end
-    end
-  end
-
-  if event.gui_type == defines.gui_type.custom then
-    if event.element.name == GUI_NAME_WINDOW then
-      M.destroy(gui_get(event.player_index))
-    end
+  if event.element and event.element.name == GUI_NAME_WINDOW then
+    M.destroy(gui_get(event.player_index))
   end
 end
 
