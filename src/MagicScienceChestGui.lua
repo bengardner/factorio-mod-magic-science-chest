@@ -76,7 +76,7 @@ local function create_window(player, title, entity)
   elems.close_button = title_flow.add {
     name = GUI_NAME_CLOSE,
     type = "sprite-button",
-    sprite = "utility/close_white",
+    sprite = "utility/close",
     hovered_sprite = "utility/close_black",
     clicked_sprite = "utility/close_black",
     style = "close_button",
@@ -174,12 +174,13 @@ Get the list of items and strings.
 function M.get_data(inst)
   -- key=item name, val=progress string
   local items = {}
-  local ips = inst.player.force.item_production_statistics
+  local packs = GlobalState.get_science_packs(false)
+  local science_pack_totals = GlobalState.get_force_prod_count(inst.player.force, packs)
+
   local min_prod = settings.global["magic-scient-chest-production"].value
 
-  local packs = GlobalState.get_science_packs(false)
   for item, _ in pairs(packs) do
-    local count = ips.get_input_count(item)
+    local count = science_pack_totals[item] or 0
     if count > 0 or min_prod == 0 then
       local caption = "[color=green]unlocked[/color]"
       if count < min_prod then
@@ -197,7 +198,7 @@ function M.rebuild_table(inst, items)
   tt.clear()
 
   for item, caption in pairs(items) do
-    local prot = game.item_prototypes[item]
+    local prot = prototypes.item[item]
     tt.add{
       type = "sprite-button",
       sprite = "item/" .. item,

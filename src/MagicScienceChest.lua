@@ -13,12 +13,14 @@ Returns an InfinityInventoryFilter.
 ]]
 local function filter_science_packs(force, science_packs, min_prod)
   local ic_filter = {}
-  local ips = force.item_production_statistics
+
+  -- add up the science packs produces on all surfaces
+  local science_pack_totals = GlobalState.get_force_prod_count(force, science_packs)
 
   -- limit to how much has been produced
   local index = 1
   for item_name, stack_size in pairs(science_packs) do
-    local prod_count = ips.get_input_count(item_name)
+    local prod_count = science_pack_totals[item_name] or 0
     if prod_count >= min_prod then
       table.insert(ic_filter, { name=item_name, count=stack_size, mode="exactly", index=index })
       index = index + 1
@@ -111,7 +113,7 @@ local function service_forces()
       log(("force: %s changes %s"):format(force.name, serpent.line(changes)))
       something_changed = true
       for _, name in ipairs(changes) do
-        local prot = game.item_prototypes[name]
+        local prot = prototypes.item[name]
         if prot ~= nil then
           force.print({ "", {"magic-science-chest.unlocked_message",
             'item.' .. name, prot.localised_name } })

@@ -46,9 +46,9 @@ local recipe = {
   type = "recipe",
   enabled = true,
   energy_required = 1,
+  --ingredients = { { type="item", name = "iron-chest", amount = 1 }},
   ingredients = {}, -- free
-  result = name,
-  result_count = 1,
+  results = { { type="item", name=name, amount=1 } },
 }
 
 data:extend({ entity, item, recipe })

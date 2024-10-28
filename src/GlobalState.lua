@@ -6,26 +6,26 @@ local util = require("__core__/lualib/util")
 
 -- entity_table: key=unit_number, val=entity
 function M.entity_table()
-  return global.entities or {}
+  return storage.entities or {}
 end
 
 function M.entity_register(entity)
   if entity ~= nil and entity.valid then
     local unum = entity.unit_number
     if unum ~= nil then
-      if global.entities == nil then
-        global.entities = {}
+      if storage.entities == nil then
+        storage.entities = {}
       end
-      if global.entities[unum] == nil then
-        global.entities[unum] = entity
+      if storage.entities[unum] == nil then
+        storage.entities[unum] = entity
       end
     end
   end
 end
 
 function M.entity_unregister(unit_number)
-  if global.entities ~= nil then
-    global.entities[unit_number] = nil
+  if storage.entities ~= nil then
+    storage.entities[unit_number] = nil
   end
 end
 
@@ -48,13 +48,13 @@ Example:
 
 -- grab the per-force table
 function M.force_data(force_index)
-  if global.forces == nil then
-    global.forces = {}
+  if storage.forces == nil then
+    storage.forces = {}
   end
-  local data = global.forces[force_index]
+  local data = storage.forces[force_index]
   if data == nil then
     data = {}
-    global.forces[force_index] = data
+    storage.forces[force_index] = data
   end
   return data
 end
@@ -130,7 +130,7 @@ end
 ------------------------------------------------------------------------------
 
 function M.log_msg_state(force, item_name, cur_prod, min_prod)
-  local prot = game.item_prototypes[item_name]
+  local prot = prototypes.item[item_name]
   if prot == nil then
     return
   end
@@ -159,34 +159,48 @@ end
 
 function M.get_science_packs(force_scan)
   -- scan for science-packs by looking at lab_inputs
-  local pp = global.science_packs or {}
+  local pp = storage.science_packs or {}
 
   if next(pp) == nil or force_scan then
     -- scan lab prototypes and update the list of science packs
-    for _, ep in pairs(game.get_filtered_entity_prototypes{{ filter="type", type="lab" }}) do
+    for _, ep in pairs(prototypes.get_entity_filtered{{ filter="type", type="lab" }}) do
       for _, item_name in ipairs(ep.lab_inputs) do
-        local ip = game.item_prototypes[item_name]
+        local ip = prototypes.item[item_name]
         if ip ~= nil then
           pp[item_name] = ip.stack_size
         end
       end
     end
 
-    global.science_packs = pp
-    for name, cnt in pairs(global.science_packs) do
+    storage.science_packs = pp
+    for name, cnt in pairs(storage.science_packs) do
       log(('Magic Science Chest: %s %s'): format(name, cnt))
     end
   end
-  return global.science_packs
+  return storage.science_packs
 end
+
+-- add up the science packs produces on all surfaces
+-- @science_packs is from get_science_packs() (key=item, val=stack size)
+function M.get_force_prod_count(force, science_packs)
+  local science_pack_totals = {}
+  for surface, _ in pairs(game.surfaces) do
+    local ips = force.get_item_production_statistics(surface)
+    for item_name, _ in pairs(science_packs) do
+      science_pack_totals[item_name] = (science_pack_totals[item_name] or 0) + ips.get_input_count(item_name)
+    end
+  end
+  return science_pack_totals
+end
+
 
 ------------------------------------------------------------------------------
 
 function M.get_player_info(player_index)
-  local player_info = global.player_info
+  local player_info = storage.player_info
   if player_info == nil then
     player_info = {}
-    global.player_info = player_info
+    storage.player_info = player_info
   end
 
   local info = player_info[player_index]
