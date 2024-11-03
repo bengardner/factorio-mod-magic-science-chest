@@ -31,6 +31,9 @@ entity.max_health = ref_entity.max_health
 entity.resistances = table.deepcopy(ref_entity.resistances)
 entity.subgroup = ref_entity.subgroup
 entity.allow_copy_paste = false
+-- link into the logistic network
+entity.logistic_mode = "passive-provider"
+entity.render_not_in_network_icon = false
 
 local ref_item = data.raw["item"][ref_item_name]
 local item = table.deepcopy(data.raw["item"][source_item_name])
