@@ -76,6 +76,7 @@ lib.events =
 {
   [defines.events.on_built_entity] = entity_added,
   [defines.events.on_robot_built_entity] = entity_added,
+  [defines.events.on_space_platform_built_entity] = entity_added,
   [defines.events.script_raised_revive] = entity_added,
   [defines.events.script_raised_built] = entity_added,
   [defines.events.on_entity_cloned] = entity_added,
